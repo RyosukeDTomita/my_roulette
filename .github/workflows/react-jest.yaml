@@ -1,0 +1,28 @@
+name: run-jest
+on: [push]
+
+defaults:
+  run:
+    shell: bash
+
+env:
+    REPOSITORY_NAME: my_roulette
+
+jobs:
+  frontend-jest: # job id(Typed by user)
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository to runner
+      - uses: actions/checkout@v3
+
+      - name: Set up node20
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: cd /home/runner/work/${{ env.REPOSITORY_NAME }}/${{ env.REPOSITORY_NAME }} && npm install
+
+      - name: Run npm test
+        run: cd /home/runner/work/${{ env.REPOSITORY_NAME }}/${{ env.REPOSITORY_NAME }} && npm test -- --watchAll=false
